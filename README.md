@@ -1,4 +1,3 @@
-# SST_Model
 # Sequential Search Transformer (SST)
 
 ## Introduction
