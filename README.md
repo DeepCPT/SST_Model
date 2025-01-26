@@ -1,5 +1,5 @@
 # SST_Model
-# Consumer Preference Transformer (CPT)
+# Sequential Search Transformer (SST)
 
 ## Introduction
 
