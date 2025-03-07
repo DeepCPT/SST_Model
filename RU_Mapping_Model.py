@@ -62,7 +62,7 @@ criterion = nn.MSELoss()  # Mean Squared Error loss
 optimizer = optim.Adam(model.parameters(), lr=0.01)  # Adam optimizer
 
 # 5. Train the model
-num_epochs = 3800
+num_epochs = 5000
 for epoch in range(num_epochs):
     model.train()  # Set the model to training mode
     optimizer.zero_grad()  # Zero the gradients
