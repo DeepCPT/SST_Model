@@ -1,4 +1,4 @@
-# Sequential Search Transformer (SST) - Monte Carlo Simulations
+# Sequential Search Transformer (SST)
 
 This repository contains the code implementation for the Monte Carlo simulations conducted to evaluate parameter recovery capabilities of the **Sequential Search Transformer (SST)**, as described in our recent study.
 
