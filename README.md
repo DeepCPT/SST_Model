@@ -27,7 +27,12 @@ The simulations provided in this repository serve the following purposes:
 
 ```bash
 ├── VAR=0.1/                    # Simuled Data, Learned Model Paramater, and Parameter Recovery results when VAR=0.1
-├── requirements.txt            # Python dependencies
+├── VAR=0.5/                    # Simuled Data, Learned Model Paramater, and Parameter Recovery results when VAR=0.5
+├── VAR=1.0/                    # Simuled Data, Learned Model Paramater, and Parameter Recovery results when VAR=1.0
+├── ru_mapping_model.py         # Reservation Utility Estimation Network
+├── model_ru_parameter.pt       # Reservation Utility Estimation Network Parameter]
+├── Simulated Data.py           # Generting Simulated Data file ""
+├── deep_structural_embedding_prepost_shock.py           # SST model, training via real-world data or simulated data
 └── README.md
 ```
 
