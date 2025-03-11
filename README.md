@@ -26,9 +26,9 @@ The simulations provided in this repository serve the following purposes:
 ## Repository Structure
 
 ```bash
-├── VAR=0.1/                    # Simulated data (simulated_sessions.pkl), trained model parameters (DeepStructural_model_final.pt), and logs with variance = 0.1
-├── VAR=0.5/                    # Simulated data, trained model parameters, and logs with variance = 0.5
-├── VAR=1.0/                    # Simulated data, trained parameters, and logs with variance = 1.0
+├── VAR=0.1/                    # Simulated data (simulated_sessions.7z, need to unzip the file), trained model parameters (DeepStructural_model_final.pt), and logs with variance = 0.1
+├── VAR=0.5/                    # Simulated data (simulated_sessions.7z, need to unzip the file), trained model parameters, and logs with variance = 0.5
+├── VAR=1.0/                    # Simulated data (simulated_sessions.7z, need to unzip the file), trained parameters, and logs with variance = 1.0
 ├── ru_model.py                 # Reservation Utility model
 ├── ru_model_parameters.pt      # Pre-trained Reservation Utility model parameters
 ├── simulated_sessions.pkl      # Generated simulated session data
