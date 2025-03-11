@@ -30,10 +30,40 @@ The simulations provided in this repository serve the following purposes:
 ├── VAR=0.5/                    # Simuled Data (simulated_sessions.7z, need to unzip the file), Learned Model Paramater (DeepStructural_model_final.pt), and log file when VAR=0.5
 ├── VAR=1.0/                    # Simuled Data (simulated_sessions.7z, need to unzip the file), Learned Model Paramater (DeepStructural_model_final.pt), and log file when VAR=1.0
 ├── ru_mapping_model.py         # Reservation Utility Estimation Network
-├── model_ru_parameter.pt       # Reservation Utility Estimation Network Parameter
+├── model_ru_parameter.pt       # Pre-Train Reservation Utility Estimation Network Parameter
 ├── Simulated _Date_PrePost_Shock.py           # Generting Simulated Data file "simulated_sessions.pkl"
 ├── deep_structural_embedding_prepost_shock.py           # SST model, training via real-world data or simulated data
 └── README.md
 ```
 
+
+
 ## Usage
+
+
+### Using Pre-trained Model and Simulated Data
+
+To evaluate SST using pre-simulated data and trained parameters:
+
+1. Copy the files `simulated_sessions.pkl` and `DeepStructural_model_final.pt` from their respective subdirectories.
+2. Run:
+   ```bash
+   python deep_structural_embedding_prepost_shock.py
+   ```
+
+This will load the simulated data and trained parameters to test the parameter recovery performance.
+
+### Full Simulation and Training Process
+
+To run the complete simulation and training process:
+
+1. Execute the simulation script to generate data:
+   ```bash
+   python Simulated_Date_PrePost_Shock.py
+   ```
+   *(Adjust the preference shock variance parameter within the script at line 588 if needed.)*
+
+2. After generating the simulated data, train and test SST:
+   ```bash
+   python deep_structural_embedding_prepost_shock.py
+   ```
