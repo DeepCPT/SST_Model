@@ -26,13 +26,14 @@ The simulations provided in this repository serve the following purposes:
 ## Repository Structure
 
 ```bash
-├── VAR=0.1/                    # Simuled Data (simulated_sessions.7z, need to unzip the file), Learned Model Paramater (DeepStructural_model_final.pt), and log file when VAR=0.1
-├── VAR=0.5/                    # Simuled Data (simulated_sessions.7z, need to unzip the file), Learned Model Paramater (DeepStructural_model_final.pt), and log file when VAR=0.5
-├── VAR=1.0/                    # Simuled Data (simulated_sessions.7z, need to unzip the file), Learned Model Paramater (DeepStructural_model_final.pt), and log file when VAR=1.0
-├── ru_mapping_model.py         # Reservation Utility Estimation Network
-├── model_ru_parameter.pt       # Pre-Train Reservation Utility Estimation Network Parameter
-├── Simulated _Date_PrePost_Shock.py           # Generting Simulated Data file "simulated_sessions.pkl"
-├── deep_structural_embedding_prepost_shock.py           # SST model, training via real-world data or simulated data
+├── VAR=0.1/                    # Simulated data (simulated_sessions.pkl), trained model parameters (DeepStructural_model_final.pt), and logs with variance = 0.1
+├── VAR=0.5/                    # Simulated data, trained model parameters, and logs with variance = 0.5
+├── VAR=1.0/                    # Simulated data, trained parameters, and logs with variance = 1.0
+├── ru_model.py                 # Reservation Utility model
+├── ru_model_parameters.pt      # Pre-trained Reservation Utility model parameters
+├── simulated_sessions.pkl      # Generated simulated session data
+├── Simulated_Date_PrePost_Shock.py   # Script to generate simulated session data
+├── deep_structural_embedding_prepost_shock.py  # SST training script for real-world or simulated data
 └── README.md
 ```
 
