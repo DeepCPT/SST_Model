@@ -22,11 +22,12 @@ The simulations provided in this repository serve the following purposes:
 - **Parameter Recovery:** Verify SST's capability to recover known parameters from simulated datasets.
 - **Model Validation:** Assess the robustness and reliability of SST under controlled conditions.
 
+
 ## Repository Structure
 
-
-
-## License
-
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+```bash
+├── VAR=0.1/                    # Simuled Data, Learned Model Paramater, and Parameter Recovery results when VAR=0.1
+├── requirements.txt            # Python dependencies
+└── README.md
+```
 
