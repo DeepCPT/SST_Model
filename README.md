@@ -30,8 +30,8 @@ The simulations provided in this repository serve the following purposes:
 ├── VAR=0.5/                    # Simuled Data, Learned Model Paramater, and Parameter Recovery results when VAR=0.5
 ├── VAR=1.0/                    # Simuled Data, Learned Model Paramater, and Parameter Recovery results when VAR=1.0
 ├── ru_mapping_model.py         # Reservation Utility Estimation Network
-├── model_ru_parameter.pt       # Reservation Utility Estimation Network Parameter]
-├── Simulated Data.py           # Generting Simulated Data file "simulated_sessions.pkl"
+├── model_ru_parameter.pt       # Reservation Utility Estimation Network Parameter
+├── Simulated _Date_PrePost_Shock.py           # Generting Simulated Data file "simulated_sessions.pkl"
 ├── deep_structural_embedding_prepost_shock.py           # SST model, training via real-world data or simulated data
 └── README.md
 ```
