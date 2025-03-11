@@ -26,9 +26,9 @@ The simulations provided in this repository serve the following purposes:
 ## Repository Structure
 
 ```bash
-├── VAR=0.1/                    # Simuled Data, Learned Model Paramater, and Parameter Recovery results when VAR=0.1
-├── VAR=0.5/                    # Simuled Data, Learned Model Paramater, and Parameter Recovery results when VAR=0.5
-├── VAR=1.0/                    # Simuled Data, Learned Model Paramater, and Parameter Recovery results when VAR=1.0
+├── VAR=0.1/                    # Simuled Data (simulated_sessions.7z, need to unzip the file), Learned Model Paramater (DeepStructural_model_final.pt), and log file when VAR=0.1
+├── VAR=0.5/                    # Simuled Data (simulated_sessions.7z, need to unzip the file), Learned Model Paramater (DeepStructural_model_final.pt), and log file when VAR=0.5
+├── VAR=1.0/                    # Simuled Data (simulated_sessions.7z, need to unzip the file), Learned Model Paramater (DeepStructural_model_final.pt), and log file when VAR=1.0
 ├── ru_mapping_model.py         # Reservation Utility Estimation Network
 ├── model_ru_parameter.pt       # Reservation Utility Estimation Network Parameter
 ├── Simulated _Date_PrePost_Shock.py           # Generting Simulated Data file "simulated_sessions.pkl"
