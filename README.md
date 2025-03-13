@@ -68,22 +68,3 @@ To run the complete simulation and training process:
    ```bash
    python deep_structural_embedding_prepost_shock.py
    ```
-
-## Package List
-re==2.2.1
-logging==0.5.1.2
-ipaddress==1.0
-zlib==1.0
-packaging==23.1
-numpy==1.26.4
-mkl==2.4.0
-Pillow==10.2.0
-defusedxml==0.7.1
-cffi==1.16.0
-matplotlib==3.9.2
-IPython==8.20.0
-colorama==0.4.6
-torch==2.1.0
-pandas==2.1.4
-GPUtil==1.4.0
-
