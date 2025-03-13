@@ -70,35 +70,20 @@ To run the complete simulation and training process:
    ```
 
 ## Package List
-
--re: 2.2.1
--logging: 0.5.1.2
--ipaddress: 1.0
--zlib: 1.0
--packaging: 23.1
--numpy.version: 1.26.4
--_ctypes: 1.1.0
--ctypes: 1.1.0
--mkl: 2.4.0
--numpy.core._multiarray_umath: 3.1
--numpy.core: 1.26.4
--numpy.linalg._umath_linalg: 0.1.5
--platform: 1.0.8
--numpy: 1.26.4
--PIL._version: 10.2.0
--PIL: 10.2.0
--defusedxml: 0.7.1
--Python: 3.1
--cffi: 1.16.0
--matplotlib: 3.9.2
--IPython: 8.20.0
--colorama: 0.4.6
--torch.version: 2.1.0
--torch.torch_version: 2.1.0
--torch: 2.1.0
--csv: 1.0
--pandas._version_meson: 2.1.4
--pandas: 2.1.4
--GPUtil.GPUtil: 1.4.0
--GPUtil: 1.4.0
+re==2.2.1
+logging==0.5.1.2
+ipaddress==1.0
+zlib==1.0
+packaging==23.1
+numpy==1.26.4
+mkl==2.4.0
+Pillow==10.2.0
+defusedxml==0.7.1
+cffi==1.16.0
+matplotlib==3.9.2
+IPython==8.20.0
+colorama==0.4.6
+torch==2.1.0
+pandas==2.1.4
+GPUtil==1.4.0
 
