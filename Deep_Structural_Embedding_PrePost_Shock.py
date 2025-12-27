@@ -10,19 +10,19 @@ import time
 from torch.optim.lr_scheduler import LambdaLR
 import pandas as pd
 import altair as alt
-from torchtext.data.functional import to_map_style_dataset
+#from torchtext.data.functional import to_map_style_dataset
 from torch.utils.data import DataLoader, Dataset
-from torchtext.vocab import build_vocab_from_iterator
-import torchtext.datasets as datasets
-import spacy
+#from torchtext.vocab import build_vocab_from_iterator
+#import torchtext.datasets as datasets
+#import spacy
 import pickle
 import GPUtil
 import warnings
 from collections import Counter
-from torch.utils.data.distributed import DistributedSampler
-import torch.distributed as dist
-import torch.multiprocessing as mp
-from torch.nn.parallel import DistributedDataParallel as DDP
+#from torch.utils.data.distributed import DistributedSampler
+#import torch.distributed as dist
+#import torch.multiprocessing as mp
+#from torch.nn.parallel import DistributedDataParallel as DDP
 
 
 
@@ -122,7 +122,7 @@ class EncoderDecoder(nn.Module):
     def decode(self, memory, src_mask, tgt, tgt_mask):
         return self.decoder(self.tgt_embed(tgt), memory, src_mask, tgt_mask)
 
-    def forward(self,src,src_len,src_mask,post_click,tgt_mask,expo_list,expo_mask,cost_feature,click_index,click_seq,purchase_mask,tgt_len,cate_preference,updated_preferecne,shock_data,cost_coeff,post_click_coeff,preference_shock_flag,consumer_list):
+    def forward(self,src,src_len,src_mask,post_click,tgt_mask,expo_list,expo_mask,cost_feature,click_index,click_seq,purchase_mask,tgt_len,cate_preference,updated_preferecne,shock_data,cost_coeff,post_click_coeff,preference_shock_flag,consumer_list,hyper_sigma):
 
         memory = self.encode(src, src_mask)
 
@@ -144,7 +144,7 @@ class EncoderDecoder(nn.Module):
         full_click_utility = pre_click_utility+post_click_utility
 
         # Get the loss of the estimation
-        loss = self.loss_generator(full_click_utility,reserved_utility,tgt_mask,expo_mask,purchase_mask,click_index,tgt_len,w_p,w_c)
+        loss = self.loss_generator(full_click_utility,reserved_utility,tgt_mask,expo_mask,purchase_mask,click_index,tgt_len,shock,post_click_utility,hyper_sigma,self.task)
 
 
         post_click_ground = torch.matmul(post_click_coeff.unsqueeze(1), post_click.transpose(1, 2)).squeeze(1)
@@ -175,13 +175,13 @@ class RNNShock(nn.Module):
         packed_output, hidden = self.rnn(packed_x,h_0)
         preference_shock = hidden[-1] # Last hidden state
 
-        # Compute mean and standard deviation for each row
+        # # Compute mean and standard deviation for each row
         row_mean = preference_shock.mean(dim=1, keepdim=True)
         row_std = preference_shock.std(dim=1, keepdim=True)
-        #
-        # Normalize each row
-        preference_shock= (preference_shock - row_mean) / row_std
-        preference_shock=preference_shock*(self.preference_shock_var ** 0.5)
+        # #
+        # # Normalize each row
+        # preference_shock= (preference_shock - row_mean) / row_std
+        # preference_shock=preference_shock*(self.preference_shock_var ** 0.5)
 
         # Create a column of zeros with the same number of rows as the matrix (price sensitivity is not in preference_shock)
         zero_column = torch.zeros(preference_shock.size(0), 1,device=preference_shock.device)
@@ -218,13 +218,13 @@ class PreferenceShock(nn.Module):
 
         preference_shock=self.preference_layer(result)
 
-        # Compute mean and standard deviation for each row
-        row_mean = preference_shock.mean(dim=1, keepdim=True)
-        row_std = preference_shock.std(dim=1, keepdim=True)
-
-        # Normalize each row
-        preference_shock= (preference_shock - row_mean) / row_std
-        preference_shock = preference_shock * (self.preference_shock_var ** 0.5)
+        # # Compute mean and standard deviation for each row
+        # row_mean = preference_shock.mean(dim=1, keepdim=True)
+        # row_std = preference_shock.std(dim=1, keepdim=True)
+        #
+        # # Normalize each row
+        # preference_shock= (preference_shock - row_mean) / row_std
+        # preference_shock = preference_shock * (self.preference_shock_var ** 0.5)
 
         # Create a column of zeros with the same number of rows as the matrix
         zero_column = torch.zeros(preference_shock.size(0), 1,device=preference_shock.device)
@@ -342,7 +342,7 @@ class Loss_Generator(nn.Module):
         self.lamda_5 = 0.01
 
 
-    def forward(self, cu, ru, tgt_mask,expo_mask, purchase_mask, click_index,tgt_len,w_p,w_c):
+    def forward(self, cu, ru, tgt_mask,expo_mask, purchase_mask, click_index,tgt_len,shock,post_click_utility,hyper_sigma,task):
         nbatches=cu.size(0)
         len_interaction = cu.size(1)
         LR=nn.ReLU()
@@ -400,7 +400,11 @@ class Loss_Generator(nn.Module):
         total_loss = purchase_loss_1 + purchase_loss_2 + click_loss_1 + click_loss_2
         #p_l1_loss=self.lamda_1 * (torch.sum(torch.abs(w_p)))
         #p_l2_loss = self.lamda_1 * (torch.sum(torch.abs(w_c)))
-        total_loss=total_loss
+        if task=='training': # add L2 regularization of shock and post_click_utility
+            total_loss=total_loss+(shock ** 2).sum() / (2 * hyper_sigma**2)+(post_click_utility[click_mask] ** 2).sum()/2
+        else: # no need L2 regularization in simulation data
+            total_loss=total_loss
+
         return total_loss
 
 class Generator(nn.Module):
@@ -961,7 +965,7 @@ def run_epoch(
                                                                                                           batch.cost_coeff,
                                                                                                           batch.post_click_coeff,
                                                                                                           batch.preference_shock_flag,
-                                                                                                          batch.consumer_list
+                                                                                                          batch.consumer_list,config["hyper_sigma"]
                                                                                                           )
         # loss_node = loss_node / accum_iter
         if mode == "train" or mode == "train+log":
@@ -1003,8 +1007,10 @@ def run_epoch(
 def run_evluation(
     data_iter,
     model,
+    config,
     mode="test",
     test_results=TestState(),
+
 ):
 
     model.eval()
@@ -1027,7 +1033,7 @@ def run_evluation(
                                                                                                           batch.cost_coeff,
                                                                                                           batch.post_click_coeff,
                                                                                                           batch.preference_shock_flag,
-                                                                                                          batch.consumer_list
+                                                                                                          batch.consumer_list,config["hyper_sigma"]
                                                                                                           )
 
         test_results.cost_coeff_prediction.append(w_c)
@@ -1167,6 +1173,7 @@ def test_worker(
         (Batch(b[0], b[1], b[2], b[3], b[4], b[5], b[6], b[7], b[8], b[9], b[10], b[11], b[12], b[13], b[14], b[15],
                b[16],b[17], pad_idx) for b in dataloader_test),
         model,
+        config,
         mode="test",
         test_results=test_state,
     )
@@ -1182,6 +1189,7 @@ config = {
     "en_de_layers": 4,
     "d_ff":256,
     "file_prefix": "DeepStructural_model_",
+    "hyper_sigma": 1,
     #"full_feature": 20,
     #"exposure_feature": 10,
     #"len_cost_coeff": 2,
@@ -1192,7 +1200,4 @@ if not exists("%sfinal.pt" % config["file_prefix"]): # if model is not pre-train
     train_result=train_worker(0, 1, config,False)
 
 test_result=test_worker(0, 1, config,False)
-
-
-
 

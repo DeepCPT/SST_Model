@@ -276,11 +276,11 @@ class ConsumerClick:
         shock=h_n.squeeze()
 
 
-        mean = shock.mean()
-        std = shock.std()
-        shock= (shock - mean) / std
-        return shock*(self.preference_shock_var ** 0.5)
-
+        # mean = shock.mean()
+        # std = shock.std()
+        # shock= (shock - mean) / std
+        # return shock*(self.preference_shock_var ** 0.5)
+        return shock
 
     def simulate_consecutive_sessions(self,num_records):
         # Data need to return
@@ -616,7 +616,7 @@ module_ru.eval()  # Set to evaluation mode
 sampler = CategorySampler(products,product_cost,product_postclick, N_cate, num_product_per_cate)
 
 # The Data set should inherent Dataset class
-num_sessions=num_consumer*500
+num_sessions=num_consumer*300
 ConClickGen=ConsumerClick(preferences,cost_coeff,post_click_coeff, N_cate, num_feature,num_cost_feature, num_postclick_feature,sampler, module_ru,list_length,preference_shock_var)
 simulated_sessions=ConClickGen.simulate_consecutive_sessions(num_sessions)
 
