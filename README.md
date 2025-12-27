@@ -43,7 +43,7 @@ The simulations provided in this repository serve the following purposes:
 
 To evaluate SST using pre-simulated data and trained parameters:
 
-1. Copy the files `simulated_sessions.pkl` and `DeepStructural_model_final.pt` from their respective subdirectories.
+1. Copy the files `simulated_sessions.pkl` and `DeepStructural_model_final.pt` from subdirectory Trained_Model.
 2. Run:
    ```bash
    python deep_structural_embedding_prepost_shock.py
@@ -59,7 +59,6 @@ To run the complete simulation and training process:
    ```bash
    python Simulated_Date_PrePost_Shock.py
    ```
-   *(Adjust the preference shock variance parameter within the script at line 588 if needed.)*
 
 2. After generating the simulated data, train and test SST:
    ```bash
